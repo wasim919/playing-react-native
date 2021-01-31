@@ -1,18 +1,39 @@
-import React from "react"
-import { View, Text, StyleSheet } from "react-native"
+import React, { useState } from "react"
+import { View, Text, StyleSheet, FlatList } from "react-native"
 
 import Header from "./components/Header"
+import TodoItem from "./components/TodoItem"
 
 export default function App() {
+	const [todos, setTodos] = useState([
+		{ value: "hello there", key: "1" },
+		{ value: "2nd one", key: "2" },
+		{ value: "what up", key: "3" }
+	])
+	const handleItemDelete = (key) => {
+		setTodos((prevTodos) => {
+			return prevTodos.filter((todo) => todo.key !== key)
+		})
+	}
 	return (
 		<View style={styles.container}>
 			<Header />
+			<View style={styles.todoItems}>
+				<FlatList
+					data={todos}
+					keyExtractor={(item) => item.key}
+					renderItem={({ item }) => <TodoItem item={item} handleItemDelete={handleItemDelete} />}
+				/>
+			</View>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1
+	},
+	todoItems: {
 		flex: 1
 	}
 })
