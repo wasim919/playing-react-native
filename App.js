@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList } from "react-native"
 
 import Header from "./components/Header"
 import TodoItem from "./components/TodoItem"
+import TodoForm from "./components/TodoForm"
 
 export default function App() {
 	const [todos, setTodos] = useState([
@@ -15,9 +16,17 @@ export default function App() {
 			return prevTodos.filter((todo) => todo.key !== key)
 		})
 	}
+	const addTodo = (text) => {
+		setTodos((prevTodos) => {
+			return [...prevTodos, { value: text, key: JSON.stringify(prevTodos.length) + 1 }]
+		})
+	}
 	return (
 		<View style={styles.container}>
 			<Header />
+			<View style={styles.todoForm}>
+				<TodoForm addTodo={addTodo} />
+			</View>
 			<View style={styles.todoItems}>
 				<FlatList
 					data={todos}
@@ -34,6 +43,11 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	todoItems: {
-		flex: 1
+		flex: 1,
+		marginHorizontal: 16
+	},
+	todoForm: {
+		marginVertical: 16,
+		marginHorizontal: 16
 	}
 })
